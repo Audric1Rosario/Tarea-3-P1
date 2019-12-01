@@ -23,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import java.awt.Toolkit;
 
 public class CrearQueso extends JDialog {
 	private Complejo vendoQuesos;
@@ -52,6 +53,7 @@ public class CrearQueso extends JDialog {
 	private DecimalFormat formateador;
 
 	public CrearQueso(Complejo vendoQuesos) {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(CrearQueso.class.getResource("/images/cheese.png")));
 		formateador = new DecimalFormat("####.##");
 		this.vendoQuesos = vendoQuesos;
 		setTitle("Fabricar un queso");

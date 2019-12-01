@@ -51,7 +51,7 @@ public class Principal extends JFrame {
 		setResizable(false);
 		setTitle("F\u00E1brica de Quesos");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1080, 720);
+		setBounds(100, 100, 720, 530);
 		setLocationRelativeTo(null);
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -126,9 +126,9 @@ public class Principal extends JFrame {
 		
 		// Para escalar las imagenes: 
 		JLabel lblImage = new JLabel("");
-		lblImage.setBounds(180, 80, 402, 215);
+		lblImage.setBounds(159, 93, 402, 215);
 		//lblImage.setIcon(new ImageIcon(Principal.class.getResource("/images/screenCheese.png")));
-		screenPath = "/images/cheeseScreen.png";
+		screenPath = "/images/cheeseStand.png";
 		ImageIcon screen = new ImageIcon(Principal.class.getResource(screenPath));
 		Image img = screen.getImage();
 		Image nueva = img.getScaledInstance(lblImage.getWidth(), lblImage.getHeight(), Image.SCALE_SMOOTH);
@@ -144,7 +144,7 @@ public class Principal extends JFrame {
 		JLabel lblLaFabricaDe = new JLabel("la f\u00E1brica de quesos");
 		lblLaFabricaDe.setForeground(new Color(255, 165, 0));
 		lblLaFabricaDe.setFont(new Font("Tahoma", Font.PLAIN, 48));
-		lblLaFabricaDe.setBounds(157, 252, 448, 97);
+		lblLaFabricaDe.setBounds(156, 309, 448, 97);
 		panelScreen.add(lblLaFabricaDe);
 		
 		// Clase controladora

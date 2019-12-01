@@ -104,7 +104,7 @@ public class Login extends JFrame {
 		setInit();
 		
 		
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/image/caduceus.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/images/cheese.png")));
 		setResizable(false);
 		setTitle("Login");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

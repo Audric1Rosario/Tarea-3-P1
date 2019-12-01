@@ -3,6 +3,7 @@ package visual;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Image;
+import java.awt.Toolkit;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -73,6 +74,7 @@ public class VenderQueso extends JDialog {
 	private JScrollPane scrollPane_1;
 
 	public VenderQueso(Complejo vendoQuesos) throws ParseException {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(VenderQueso.class.getResource("/images/cheese.png")));
 		this.vendoQuesos = vendoQuesos;
 		stock = new ArrayList<String>();
 		carritoCompras = new ArrayList<String>();

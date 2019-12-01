@@ -2,6 +2,7 @@ package visual;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Toolkit;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -43,6 +44,7 @@ public class MostrarHistorial extends JDialog {
 	DecimalFormat formateador;
 
 	public MostrarHistorial(Complejo vendoQuesos) {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(MostrarHistorial.class.getResource("/images/cheese.png")));
 		formateador = new DecimalFormat("####.##");
 		this.vendoQuesos = vendoQuesos;
 		setTitle("Historial de quesos");
