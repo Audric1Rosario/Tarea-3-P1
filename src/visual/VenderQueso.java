@@ -22,6 +22,9 @@ import logical.Factura;
 import logical.Queso;
 
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -327,6 +330,7 @@ public class VenderQueso extends JDialog {
 						
 						SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yyyy"); 
 						String message = "******Fábrica de quesos******\n\n";
+						message += "Factura  : " + factura.getIdFactura() + "\n";
 						message += "Cuenta   : " + cliente.getIdCliente() + "\n";
 						message += "Fecha    : " + formater.format(new Date()) + "\n";
 						message += "Dirección: " + cliente.getDireccion() + "\n";
@@ -360,6 +364,40 @@ public class VenderQueso extends JDialog {
 						mlabel.setEditable(false);
 						messageScroll.setViewportView(mlabel);
 						JOptionPane.showMessageDialog(null, messagePanel, "Factura.", JOptionPane.INFORMATION_MESSAGE);
+						
+						
+
+						// Crear directorio para las facturas.
+						String path = System.getProperty("user.dir");
+						File directorio = new File(path + "/data/facturas");
+						
+						if (!directorio.exists()) {
+							if (!directorio.mkdirs())  {
+								JOptionPane.showMessageDialog(null, "Error al cargar datos.", "Data.", JOptionPane.ERROR_MESSAGE);
+							}
+						}
+						
+						// Crear el fichero para guardar el .txt
+						File archivo = new File(path + "/data/facturas/" + factura.getIdFactura() + ".txt");
+						FileWriter escritor;
+						try {
+							escritor = new FileWriter(archivo);
+							// Escribe el archivo con la informacion
+					        for (int i=0; i< message.length(); i++)
+					            escritor.write(message.charAt(i));
+					        escritor.close();
+							} catch (IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						
+						// Enviar fichero por la red.
+						try {
+							Principal.getSalidaSocket().writeUTF(message);
+							Principal.getSalidaSocket().flush();
+						} catch (IOException ioe) {
+							JOptionPane.showMessageDialog(null, "Error: "+ioe, "Error", JOptionPane.ERROR_MESSAGE);
+						}											
 						clear(true);
 						
 					}

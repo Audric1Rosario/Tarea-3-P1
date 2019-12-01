@@ -8,14 +8,12 @@ public class Factura implements Serializable {
 	private String idFactura;
 	private Cliente miCliente;
 	private ArrayList<Queso> misQuesos;
-	private static int codId = 0;
 	
 	public Factura(Cliente miCliente) {
 		super();
 		this.miCliente = miCliente;
 		misQuesos = new ArrayList<Queso>();
-		this.idFactura = "F-" + codId;
-		codId++;
+		this.idFactura = "F-" + (Complejo.getInstance().getMisFacturaciones().size() + 1);		
 	}
 
 	public String getIdFactura() {
