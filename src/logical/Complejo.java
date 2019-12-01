@@ -7,6 +7,7 @@ public class Complejo {
 	private ArrayList<Queso> misQuesos;
 	private ArrayList<Cliente> misClientes;
 	private ArrayList<Factura> misFacturaciones;
+	private ArrayList<Usuario> misUsuarios;
 	
 	// Constructor
 	public Complejo() {
@@ -14,6 +15,7 @@ public class Complejo {
 		this.misQuesos = new ArrayList<Queso>();
 		this.misClientes = new ArrayList<Cliente>();
 		this.misFacturaciones = new ArrayList<Factura>();
+		this.misUsuarios = new ArrayList<Usuario>();
 	}
 
 	// Getters and Setters
@@ -43,6 +45,14 @@ public class Complejo {
 	
 	// Agregar y eliminar
 	
+	public ArrayList<Usuario> getMisUsuarios() {
+		return misUsuarios;
+	}
+
+	public void setMisUsuarios(ArrayList<Usuario> misUsuarios) {
+		this.misUsuarios = misUsuarios;
+	}
+
 	public void addQueso (Queso nuevo) {
 		misQuesos.add(nuevo);
 		return;
@@ -102,6 +112,22 @@ public class Complejo {
 		}
 		return buscar;
 	}
+	
+	// Usuario
+	public Usuario buscarUsuarioByUsername(String username) {
+		Usuario buscar = null;
+		boolean encontrado = false; int aux = 0;
+		
+		while (aux < misUsuarios.size() && !encontrado) {
+			if (misUsuarios.get(aux).getUsername().equals(username)) {
+				buscar = misUsuarios.get(aux);
+				encontrado = true;
+			}
+			aux++;
+		}
+		return buscar;
+	}
+	
 
 	// Tareas requeridas por el cliente de este software
 	public float calcularPrecio(String idFactura) {
