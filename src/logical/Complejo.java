@@ -2,12 +2,16 @@ package logical;
 
 import java.util.ArrayList;
 
+
+
 public class Complejo {
 	// Clase controladora ~~
 	private ArrayList<Queso> misQuesos;
 	private ArrayList<Cliente> misClientes;
 	private ArrayList<Factura> misFacturaciones;
 	private ArrayList<Usuario> misUsuarios;
+	private static Complejo complex = null;
+	private Usuario admin = new Usuario("admin", "1234", "admin", "Miguel");
 	
 	// Constructor
 	public Complejo() {
@@ -16,7 +20,16 @@ public class Complejo {
 		this.misClientes = new ArrayList<Cliente>();
 		this.misFacturaciones = new ArrayList<Factura>();
 		this.misUsuarios = new ArrayList<Usuario>();
+		misUsuarios.add(admin);
 	}
+	
+	public static Complejo getInstance() {
+		if(complex == null){
+			 complex = new Complejo();
+		 }
+		 return complex;
+	}
+
 
 	// Getters and Setters
 	public ArrayList<Queso> getMisQuesos() {

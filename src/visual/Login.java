@@ -29,6 +29,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import logical.Complejo;
+import logical.Usuario;
 
 public class Login extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -146,7 +147,7 @@ public class Login extends JFrame {
 				String password = String.valueOf(passPass.getPassword());
 				boolean ok = false;
 				
-			/*	Empleado actual = Clinica.getInstance().buscarEmpleadoByUsername(username);
+				Usuario actual = Complejo.getInstance().buscarUsuarioByUsername(username);
 				
 				if (actual != null)
 				{
@@ -156,15 +157,13 @@ public class Login extends JFrame {
 				}
 				
 				if (ok) {
-				//	Dashboard ventana = new Dashboard(actual);				
-					actual.setLastConnection(new Date());
-				//	ventana.setVisible(true);
+					Principal ventana = new Principal();				
+				    ventana.setVisible(true);
 					
 					dispose();
 				} else {
 					JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos.", "Error de inicio.", JOptionPane.WARNING_MESSAGE);
 				}
-				*/
 				
 			}
 		});
