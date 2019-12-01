@@ -194,7 +194,8 @@ public class Complejo implements Serializable {
 		if (pedido != null)
 		{
 			mayor = pedido.esferaMayor();
-			precio = mayor.costo();
+			if (mayor != null)
+				precio = mayor.costo();
 		}
 
 		return precio;

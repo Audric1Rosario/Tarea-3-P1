@@ -2,6 +2,7 @@ package visual;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
 
@@ -21,9 +22,12 @@ import logical.Factura;
 import logical.Queso;
 
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.awt.event.ActionEvent;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.MaskFormatter;
@@ -36,7 +40,9 @@ import javax.swing.JTextField;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.ListSelectionModel;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 public class VenderQueso extends JDialog {
 
@@ -80,7 +86,7 @@ public class VenderQueso extends JDialog {
 		total = 0f;
 		setTitle("Punto de venta y facturaciones.");
 		setResizable(false);		
-		setBounds(100, 100, 425, 529);
+		setBounds(100, 100, 530, 620);
 		getContentPane().setLayout(new BorderLayout());
 		setLocationRelativeTo(null);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -93,7 +99,7 @@ public class VenderQueso extends JDialog {
 			
 			JPanel panel_1 = new JPanel();
 			panel_1.setBorder(new TitledBorder(null, "Datos del cliente", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-			panel_1.setBounds(10, 11, 389, 146);
+			panel_1.setBounds(10, 11, 494, 146);
 			panel.add(panel_1);
 			panel_1.setLayout(null);
 			
@@ -111,13 +117,13 @@ public class VenderQueso extends JDialog {
 			
 			txtDireccion = new JTextField();
 			txtDireccion.setEditable(false);
-			txtDireccion.setBounds(95, 79, 284, 20);
+			txtDireccion.setBounds(95, 79, 389, 20);
 			panel_1.add(txtDireccion);
 			txtDireccion.setColumns(10);
 			
 			txtNombre = new JTextField();
 			txtNombre.setEditable(false);
-			txtNombre.setBounds(95, 47, 284, 20);
+			txtNombre.setBounds(95, 47, 389, 20);
 			panel_1.add(txtNombre);
 			txtNombre.setColumns(10);
 			
@@ -133,13 +139,13 @@ public class VenderQueso extends JDialog {
 				e1.printStackTrace();
 			}
 			txtTelefono.setEditable(false);
-			txtTelefono.setBounds(95, 110, 148, 20);
+			txtTelefono.setBounds(95, 110, 223, 20);
 			panel_1.add(txtTelefono);
 			txtTelefono.setColumns(10);
 			
 			txtIdCliente = new JTextField();
 			txtIdCliente.setColumns(10);
-			txtIdCliente.setBounds(95, 15, 148, 20);
+			txtIdCliente.setBounds(95, 15, 223, 20);
 			panel_1.add(txtIdCliente);
 			
 			btnBuscar = new JButton("Buscar");
@@ -180,7 +186,7 @@ public class VenderQueso extends JDialog {
 	
 				}
 			});
-			btnBuscar.setBounds(253, 14, 89, 23);
+			btnBuscar.setBounds(328, 14, 89, 23);
 			panel_1.add(btnBuscar);
 			
 			btnModificar = new JButton("Modificar");
@@ -202,18 +208,18 @@ public class VenderQueso extends JDialog {
 					}
 				}
 			});
-			btnModificar.setBounds(253, 109, 89, 23);
+			btnModificar.setBounds(328, 109, 89, 23);
 			panel_1.add(btnModificar);
 			
 			JPanel panel_2 = new JPanel();
 			panel_2.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Compra y venta de quesos.", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-			panel_2.setBounds(10, 168, 389, 273);
+			panel_2.setBounds(10, 168, 494, 364);
 			panel.add(panel_2);
 			panel_2.setLayout(null);
 			
 			JPanel panel_3 = new JPanel();
 			panel_3.setBorder(new TitledBorder(null, "Quesos Disponibles", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-			panel_3.setBounds(10, 25, 149, 237);
+			panel_3.setBounds(10, 25, 202, 328);
 			panel_2.add(panel_3);
 			panel_3.setLayout(new BorderLayout(0, 0));
 			
@@ -229,7 +235,7 @@ public class VenderQueso extends JDialog {
 			
 			JPanel panel_4 = new JPanel();
 			panel_4.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Carrito de Compras", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-			panel_4.setBounds(230, 25, 149, 237);
+			panel_4.setBounds(282, 25, 202, 328);
 			panel_2.add(panel_4);
 			panel_4.setLayout(new BorderLayout(0, 0));
 			
@@ -273,7 +279,7 @@ public class VenderQueso extends JDialog {
 			});
 			btnReturn.setEnabled(false);
 			btnReturn.setToolTipText("Pulse para dejar un queso");
-			btnReturn.setBounds(169, 147, 49, 47);
+			btnReturn.setBounds(222, 181, 49, 47);
 			imagePath = "/images/left-arrow.png";
 			adjust = new ImageIcon(VenderQueso.class.getResource(imagePath));
 			img = adjust.getImage();
@@ -296,7 +302,7 @@ public class VenderQueso extends JDialog {
 			});
 			btnAdd.setEnabled(false);
 			btnAdd.setToolTipText("Pulse para agregar un queso");
-			btnAdd.setBounds(169, 89, 49, 47);
+			btnAdd.setBounds(222, 123, 49, 47);
 			imagePath = "/images/arrow-point-to-right.png";
 			adjust = new ImageIcon(VenderQueso.class.getResource(imagePath));
 			img = adjust.getImage();
@@ -319,22 +325,41 @@ public class VenderQueso extends JDialog {
 							factura.getMisQuesos().add(Complejo.getInstance().getMisQuesos().get(formatItemIndex(index)));
 						}
 						
-						String message = "Usted satisfactoriamente ha hecho la compra de los siguientes quesos:\n";
+						SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yyyy"); 
+						String message = "******Fábrica de quesos******\n\n";
+						message += "Cuenta   : " + cliente.getIdCliente() + "\n";
+						message += "Fecha    : " + formater.format(new Date()) + "\n";
+						message += "Dirección: " + cliente.getDireccion() + "\n";
+						message += "Teléfono : " + cliente.getTelefono() + "\n\n";
+						message += "Quesos comprados:\n";
+						message += "Tipo\t Volumen (cm^3)\tCosto\n";
 						for (Queso queso : factura.getMisQuesos()) {
 							Complejo.getInstance().eliminarQueso(queso);
-							message += "Tipo: ";
 							if (queso instanceof Esfera)
-								message += "Esférico";
+								message += "Esfera\t ";
 							else if (queso instanceof CilindroHueco)
-								message += "Cilíndrico Hueco";
+								message += "Hueco\t ";
 							else if (queso instanceof Cilindro)
-								message += "Cilíndrico";
-							message += "; Volumen: " + formateador.format(queso.volumen()) + 
-									"cm^3; Costo: " + formateador.format(queso.costo()) + "$\n";
+								message += "Cilindro ";
+							message += formateador.format(queso.volumen()) + "\t\t";
+							message += formateador.format(queso.costo()) + "$\n";
 						}
 						Complejo.getInstance().addFactura(factura);
 						message += "\nMonto a pagar: " + formateador.format(total) + "$.";
-						JOptionPane.showMessageDialog(null, message, "Factura.", JOptionPane.INFORMATION_MESSAGE);
+						
+						JPanel messagePanel = new JPanel();
+						messagePanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+						messagePanel.setBounds(10, 10, 250, 520);
+						
+						JScrollPane messageScroll = new JScrollPane();
+						//messageScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+						messagePanel.add(messageScroll, BorderLayout.CENTER);
+						
+						JTextArea mlabel = new JTextArea(message);
+						mlabel.setFont(new Font("Consolas", Font.PLAIN, 12));
+						mlabel.setEditable(false);
+						messageScroll.setViewportView(mlabel);
+						JOptionPane.showMessageDialog(null, messagePanel, "Factura.", JOptionPane.INFORMATION_MESSAGE);
 						clear(true);
 						
 					}
