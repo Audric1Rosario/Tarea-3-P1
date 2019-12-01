@@ -25,7 +25,6 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.JTable;
 
 public class ListadoClientes extends JDialog {
-	private Complejo vendoQuesos;
 	private final JPanel contentPanel = new JPanel();
 
 	// Table
@@ -36,12 +35,11 @@ public class ListadoClientes extends JDialog {
 	// Decimal Formateador
 	private DecimalFormat formateador;
 
-	public ListadoClientes(Complejo vendoQuesos) {
+	public ListadoClientes() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ListadoClientes.class.getResource("/images/cheese.png")));
 		formateador = new DecimalFormat("####.##");
 		setTitle("Listado de clientes");
 		setResizable(false);
-		this.vendoQuesos = vendoQuesos;
 		setBounds(100, 100, 502, 470);
 		getContentPane().setLayout(new BorderLayout());
 		setLocationRelativeTo(null);
@@ -88,13 +86,13 @@ public class ListadoClientes extends JDialog {
 	private void loadQuesos() {
 		model.setRowCount(0);
 		row = new Object[model.getColumnCount()];
-		for (int i = 0; i < vendoQuesos.getMisFacturaciones().size(); i++) {
-			row[0] = vendoQuesos.getMisFacturaciones().get(i).getIdFactura();
-			row[1] = vendoQuesos.getMisFacturaciones().get(i).getMiCliente().getIdCliente();
-			row[2] = vendoQuesos.getMisFacturaciones().get(i).getMiCliente().getNombre();
-			row[3] = formateador.format(vendoQuesos.mayorQuesoEsferico(row[0].toString())) + "$";
-			row[4] = vendoQuesos.getMisFacturaciones().get(i).getMisQuesos().size();
-			row[5] = formateador.format(vendoQuesos.calcularPrecio(row[0].toString())) + "$";
+		for (int i = 0; i < Complejo.getInstance().getMisFacturaciones().size(); i++) {
+			row[0] = Complejo.getInstance().getMisFacturaciones().get(i).getIdFactura();
+			row[1] = Complejo.getInstance().getMisFacturaciones().get(i).getMiCliente().getIdCliente();
+			row[2] = Complejo.getInstance().getMisFacturaciones().get(i).getMiCliente().getNombre();
+			row[3] = formateador.format(Complejo.getInstance().mayorQuesoEsferico(row[0].toString())) + "$";
+			row[4] = Complejo.getInstance().getMisFacturaciones().get(i).getMisQuesos().size();
+			row[5] = formateador.format(Complejo.getInstance().calcularPrecio(row[0].toString())) + "$";
 			model.addRow(row);
 		}
 		return;

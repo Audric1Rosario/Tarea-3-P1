@@ -1,6 +1,9 @@
 package logical;
 
-public class Esfera extends Queso {
+import java.io.Serializable;
+
+public class Esfera extends Queso implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	public Esfera(float precioBase, float precioUnitario, float radio) {
 		super(precioBase, precioUnitario, radio);

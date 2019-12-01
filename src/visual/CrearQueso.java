@@ -26,7 +26,6 @@ import javax.swing.SpinnerNumberModel;
 import java.awt.Toolkit;
 
 public class CrearQueso extends JDialog {
-	private Complejo vendoQuesos;
 	private final JPanel contentPanel = new JPanel();
 
 	// Radio button
@@ -52,10 +51,9 @@ public class CrearQueso extends JDialog {
 	// Decimales
 	private DecimalFormat formateador;
 
-	public CrearQueso(Complejo vendoQuesos) {
+	public CrearQueso() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(CrearQueso.class.getResource("/images/cheese.png")));
 		formateador = new DecimalFormat("####.##");
-		this.vendoQuesos = vendoQuesos;
 		setTitle("Fabricar un queso");
 		setResizable(false);
 		setBounds(100, 100, 450, 300);
@@ -258,7 +256,7 @@ public class CrearQueso extends JDialog {
 							altura = Float.valueOf(spnRadioAltura.getValue().toString());
 							radio = Float.valueOf(spnRadioCil.getValue().toString());							
 							valor =  new Cilindro(precioBase, precioUnitario, radio, altura);
-							vendoQuesos.getMisQuesos().add(valor);
+							Complejo.getInstance().getMisQuesos().add(valor);
 							break;
 						case 2: 
 							altura = Float.valueOf(spnAlturaCilHue.getValue().toString());
@@ -274,12 +272,12 @@ public class CrearQueso extends JDialog {
 							}
 							
 							valor = new CilindroHueco(precioBase, precioUnitario, radio, altura, radioInt);
-							vendoQuesos.getMisQuesos().add(valor);
+							Complejo.getInstance().getMisQuesos().add(valor);
 							break;
 						default:
 							radio = Float.valueOf(spnRadio.getValue().toString());
 							valor = new Esfera(precioBase, precioUnitario, radio);
-							vendoQuesos.getMisQuesos().add(valor);
+							Complejo.getInstance().getMisQuesos().add(valor);
 						}
 						
 						// Construir un mensaje de que está listo

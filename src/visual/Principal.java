@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import logical.Complejo;
+import logical.Usuario;
 
 import java.awt.Panel;
 import java.awt.FlowLayout;
@@ -27,12 +28,20 @@ import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 public class Principal extends JFrame {
-	private Complejo vendoQuesos;
 	private JPanel contentPane;
 	private String screenPath;
-
+	
+	// Variables lógicas.
+	private Usuario actual;
+/*
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -44,14 +53,33 @@ public class Principal extends JFrame {
 				}
 			}
 		});
-	}
+	}*/
 
-	public Principal() {
+	public Principal(Usuario actual) {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				// Guardar datos
+				FileOutputStream fabricaGuardar;
+				ObjectOutputStream fabricaWrite;
+				
+				try {
+					fabricaGuardar = new FileOutputStream("data/fabrica.dat");
+					fabricaWrite = new ObjectOutputStream(fabricaGuardar);
+					fabricaWrite.writeObject(Complejo.getInstance());
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		this.actual = actual;
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Principal.class.getResource("/images/cheese.png")));
 		setResizable(false);
 		setTitle("F\u00E1brica de Quesos");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 720, 530);
+		setBounds(100, 100, 1080, 720);
 		setLocationRelativeTo(null);
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -62,7 +90,7 @@ public class Principal extends JFrame {
 		JMenuItem mntmCrearQueso = new JMenuItem("Crear un queso");
 		mntmCrearQueso.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CrearQueso ventana = new CrearQueso(vendoQuesos);
+				CrearQueso ventana = new CrearQueso();
 				ventana.setModal(true);
 				ventana.setVisible(true);
 			}
@@ -72,7 +100,7 @@ public class Principal extends JFrame {
 		JMenuItem mntmMostrarHist = new JMenuItem("Mostrar historial");
 		mntmMostrarHist.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MostrarHistorial ventana = new MostrarHistorial(vendoQuesos);
+				MostrarHistorial ventana = new MostrarHistorial();
 				ventana.setModal(true);
 				ventana.setVisible(true);
 			}
@@ -85,15 +113,9 @@ public class Principal extends JFrame {
 		JMenuItem mntmPuntoDeVenta = new JMenuItem("Punto de venta");
 		mntmPuntoDeVenta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				VenderQueso ventana = null;
-				try {
-					ventana = new VenderQueso(vendoQuesos);
-				} catch (ParseException e1) {
-					e1.printStackTrace();
-				}
-				ventana.setVisible(true);
+				VenderQueso ventana = new VenderQueso();				
 				ventana.setModal(true);
-				
+				ventana.setVisible(true);								
 			}
 		});
 		mnQuesos.add(mntmPuntoDeVenta);
@@ -101,7 +123,7 @@ public class Principal extends JFrame {
 		JMenuItem mntmClientes = new JMenuItem("Clientes");
 		mntmClientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ListadoClientes ventana = new ListadoClientes(vendoQuesos);
+				ListadoClientes ventana = new ListadoClientes();
 				ventana.setModal(true);
 				ventana.setVisible(true);
 			}
@@ -126,7 +148,7 @@ public class Principal extends JFrame {
 		
 		// Para escalar las imagenes: 
 		JLabel lblImage = new JLabel("");
-		lblImage.setBounds(159, 93, 402, 215);
+		lblImage.setBounds(232, 122, 593, 350);
 		//lblImage.setIcon(new ImageIcon(Principal.class.getResource("/images/screenCheese.png")));
 		screenPath = "/images/cheeseStand.png";
 		ImageIcon screen = new ImageIcon(Principal.class.getResource(screenPath));
@@ -138,16 +160,13 @@ public class Principal extends JFrame {
 		JLabel lblBienvenidosA = new JLabel("Bienvenidos a");
 		lblBienvenidosA.setFont(new Font("Tahoma", Font.PLAIN, 48));
 		lblBienvenidosA.setForeground(new Color(255, 165, 0));
-		lblBienvenidosA.setBounds(225, 27, 313, 67);
+		lblBienvenidosA.setBounds(372, 27, 313, 67);
 		panelScreen.add(lblBienvenidosA);
 		
 		JLabel lblLaFabricaDe = new JLabel("la f\u00E1brica de quesos");
 		lblLaFabricaDe.setForeground(new Color(255, 165, 0));
 		lblLaFabricaDe.setFont(new Font("Tahoma", Font.PLAIN, 48));
-		lblLaFabricaDe.setBounds(156, 309, 448, 97);
+		lblLaFabricaDe.setBounds(304, 500, 448, 97);
 		panelScreen.add(lblLaFabricaDe);
-		
-		// Clase controladora
-		vendoQuesos = new Complejo();
 	}
 }

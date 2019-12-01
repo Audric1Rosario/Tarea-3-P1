@@ -1,17 +1,18 @@
 package logical;
 
-public class Usuario {
+import java.io.Serializable;
+
+public class Usuario implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private String username;
 	private String password;
 	private String tipo;
-	private String nombre;
 	
-	public Usuario(String username, String password, String tipo, String nombre) {
+	public Usuario(String username, String password, String tipo) {
 		super();
 		this.username = username;
 		this.password = password;
 		this.tipo = tipo;
-		this.nombre = nombre;
 	}
 
 	public String getUsername() {
@@ -28,14 +29,6 @@ public class Usuario {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
 	}
 
 	public String getTipo() {

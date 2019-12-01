@@ -56,22 +56,25 @@ public class Login extends JFrame {
 					if (directorio.mkdirs()) {
 						
 					} else {
-						JOptionPane.showMessageDialog(null, "Error al cargar datos.", "Data.", JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Error al cargar datos.", "Data.", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 				
 				// Cargar la clase controladora
 				try {
-					fabrica = new FileInputStream ("data/queso.dat");
+					fabrica = new FileInputStream ("data/fabrica.dat");
 					fabricaRead = new ObjectInputStream(fabrica);
 					Complejo temp = (Complejo)fabricaRead.readObject();
+					Complejo.setInstance(temp);
 					fabrica.close();
 					fabricaRead.close();
 				} catch (FileNotFoundException e) {
 					try {
 						fabrica2 = new  FileOutputStream("data/fabrica.dat");
 						fabricaWrite = new ObjectOutputStream(fabrica2);
-						//String aux = new Administrador("Administrador", "Admin", "Admin", 1);
+						Usuario aux = new Usuario("Admin", "Admin", "Administrador");
+						Complejo.getInstance().addUsuario(aux);
+						fabricaWrite.writeObject(Complejo.getInstance());
 						fabrica2.close();
 						fabricaWrite.close();
 					} catch (FileNotFoundException e1) {
@@ -118,11 +121,12 @@ public class Login extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setForeground(new Color(255, 215, 0));
 		contentPane.add(panel, BorderLayout.CENTER);
+		setLocationRelativeTo(null);
 		panel.setLayout(null);
 		
 		JLabel lblLoginImage = new JLabel("");
 		screenPath = "/images/userA.png";
-		lblLoginImage.setBounds(278, 59, 186, 176);
+		lblLoginImage.setBounds(285, 92, 157, 156);
 		lblLoginImage.setIcon(new ImageIcon(((new ImageIcon(Login.class.getResource(screenPath))).getImage()).getScaledInstance(
 				lblLoginImage.getWidth(), lblLoginImage.getHeight(), Image.SCALE_SMOOTH)));
 		panel.add(lblLoginImage);
@@ -136,7 +140,7 @@ public class Login extends JFrame {
 		
 		txtUsuario = new JTextField();
 		txtUsuario.setHorizontalAlignment(SwingConstants.CENTER);
-		txtUsuario.setBounds(255, 285, 233, 27);
+		txtUsuario.setBounds(247, 306, 233, 27);
 		panel.add(txtUsuario);
 		txtUsuario.setColumns(10);
 		
@@ -157,9 +161,8 @@ public class Login extends JFrame {
 				}
 				
 				if (ok) {
-					Principal ventana = new Principal();				
-				    ventana.setVisible(true);
-					
+					Principal ventana = new Principal(actual);				
+				    ventana.setVisible(true);					
 					dispose();
 				} else {
 					JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos.", "Error de inicio.", JOptionPane.WARNING_MESSAGE);
@@ -167,28 +170,28 @@ public class Login extends JFrame {
 				
 			}
 		});
-		btnEnter.setBounds(285, 395, 173, 27);
+		btnEnter.setBounds(277, 416, 173, 27);
 		panel.add(btnEnter);
 		
 		JLabel lblUsername = new JLabel("Usuario");
 		lblUsername.setHorizontalAlignment(SwingConstants.CENTER);
-		lblUsername.setBounds(334, 261, 74, 14);
+		lblUsername.setBounds(326, 282, 74, 14);
 		panel.add(lblUsername);
 		
 		JLabel lblContrasea = new JLabel("Contrase\u00F1a");
 		lblContrasea.setHorizontalAlignment(SwingConstants.CENTER);
-		lblContrasea.setBounds(334, 323, 74, 14);
+		lblContrasea.setBounds(326, 344, 74, 14);
 		panel.add(lblContrasea);
 		
 		JLabel lblNewLabel = new JLabel("Fabrica de Quesos");
-		lblNewLabel.setFont(new Font("Monotype Corsiva", Font.BOLD, 20));
+		lblNewLabel.setFont(new Font("Monotype Corsiva", Font.BOLD, 24));
 		lblNewLabel.setForeground(Color.ORANGE);
-		lblNewLabel.setBounds(89, 26, 214, 36);
+		lblNewLabel.setBounds(86, 31, 214, 36);
 		panel.add(lblNewLabel);
 		
 		passPass = new JPasswordField();
 		passPass.setHorizontalAlignment(SwingConstants.CENTER);
-		passPass.setBounds(255, 348, 233, 27);
+		passPass.setBounds(247, 369, 233, 27);
 		panel.add(passPass);
 	}
 

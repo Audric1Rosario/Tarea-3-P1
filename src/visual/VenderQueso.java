@@ -25,7 +25,6 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
-import java.awt.Dimension;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.MaskFormatter;
 import javax.swing.UIManager;
@@ -38,10 +37,10 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.ListSelectionModel;
 import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
 
 public class VenderQueso extends JDialog {
-	private Complejo vendoQuesos;
+
+	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtDireccion;
 	private JTextField txtNombre;
@@ -57,8 +56,8 @@ public class VenderQueso extends JDialog {
 	private JButton btnCancelar;
 	
 	// Listas
-	private JList lstStock;
-	private JList lstCarrito;
+	private JList<String> lstStock;
+	private JList<String> lstCarrito;
 	
 	// Variable para saber si es posible vender
 	private boolean esPosibleVender = true;
@@ -73,9 +72,8 @@ public class VenderQueso extends JDialog {
 	private JTextField txtTotal;
 	private JScrollPane scrollPane_1;
 
-	public VenderQueso(Complejo vendoQuesos) throws ParseException {
+	public VenderQueso() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(VenderQueso.class.getResource("/images/cheese.png")));
-		this.vendoQuesos = vendoQuesos;
 		stock = new ArrayList<String>();
 		carritoCompras = new ArrayList<String>();
 		formateador = new DecimalFormat("####.##");
@@ -127,9 +125,13 @@ public class VenderQueso extends JDialog {
 			lblTelefno.setBounds(10, 113, 75, 14);
 			panel_1.add(lblTelefno);
 			
-			MaskFormatter mask = new MaskFormatter("(###) ###-####");
 			
-			txtTelefono = new JFormattedTextField(mask);
+			try {
+				txtTelefono = new JFormattedTextField(new MaskFormatter("(###) ###-####"));
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			txtTelefono.setEditable(false);
 			txtTelefono.setBounds(95, 110, 148, 20);
 			panel_1.add(txtTelefono);
@@ -147,7 +149,7 @@ public class VenderQueso extends JDialog {
 					
 					if (idCliente.length() > 0)
 					{
-						Cliente cliente = vendoQuesos.buscarClienteById(idCliente);
+						Cliente cliente = Complejo.getInstance().buscarClienteById(idCliente);
 						txtNombre.setEditable(true);
 						txtDireccion.setEditable(true);
 						txtTelefono.setEditable(true);
@@ -187,12 +189,12 @@ public class VenderQueso extends JDialog {
 				public void actionPerformed(ActionEvent arg0) {
 					if (btnModificar.getText().equalsIgnoreCase("Registrar")) {
 						Cliente nuevo = new Cliente(txtIdCliente.getText(), txtNombre.getText(), txtDireccion.getText(), txtTelefono.getText());
-						vendoQuesos.getMisClientes().add(nuevo);
+						Complejo.getInstance().getMisClientes().add(nuevo);
 						clear(false);
 						JOptionPane.showMessageDialog(null, "Cliente registrado exitosamente.", "Información", JOptionPane.INFORMATION_MESSAGE);
 					}
 					else {
-						Cliente cliente = vendoQuesos.buscarClienteById(txtIdCliente.getText());
+						Cliente cliente = Complejo.getInstance().buscarClienteById(txtIdCliente.getText());
 						cliente.setNombre(txtNombre.getText());
 						cliente.setDireccion(txtDireccion.getText());
 						cliente.setTelefono(txtTelefono.getText());
@@ -218,7 +220,7 @@ public class VenderQueso extends JDialog {
 			JScrollPane scrollPane = new JScrollPane();
 			panel_3.add(scrollPane, BorderLayout.CENTER);
 			
-			lstStock = new JList();
+			lstStock = new JList<String>();
 			scrollPane.setViewportView(lstStock);
 			lstStock.setEnabled(false);
 			lstStock.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -247,7 +249,7 @@ public class VenderQueso extends JDialog {
 			scrollPane_1 = new JScrollPane();
 			panel_4.add(scrollPane_1, BorderLayout.CENTER);
 			
-			lstCarrito = new JList();
+			lstCarrito = new JList<String>();
 			scrollPane_1.setViewportView(lstCarrito);
 			lstCarrito.setEnabled(false);
 			lstCarrito.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -311,15 +313,15 @@ public class VenderQueso extends JDialog {
 				btnFacturar = new JButton("Facturar");
 				btnFacturar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						Cliente cliente = vendoQuesos.buscarClienteById(txtIdCliente.getText());
+						Cliente cliente = Complejo.getInstance().buscarClienteById(txtIdCliente.getText());
 						Factura factura = new Factura(cliente);
 						for (String index : carritoCompras) {
-							factura.getMisQuesos().add(vendoQuesos.getMisQuesos().get(formatItemIndex(index)));
+							factura.getMisQuesos().add(Complejo.getInstance().getMisQuesos().get(formatItemIndex(index)));
 						}
 						
 						String message = "Usted satisfactoriamente ha hecho la compra de los siguientes quesos:\n";
 						for (Queso queso : factura.getMisQuesos()) {
-							vendoQuesos.eliminarQueso(queso);
+							Complejo.getInstance().eliminarQueso(queso);
 							message += "Tipo: ";
 							if (queso instanceof Esfera)
 								message += "Esférico";
@@ -330,7 +332,7 @@ public class VenderQueso extends JDialog {
 							message += "; Volumen: " + formateador.format(queso.volumen()) + 
 									"cm^3; Costo: " + formateador.format(queso.costo()) + "$\n";
 						}
-						vendoQuesos.addFactura(factura);
+						Complejo.getInstance().addFactura(factura);
 						message += "\nMonto a pagar: " + formateador.format(total) + "$.";
 						JOptionPane.showMessageDialog(null, message, "Factura.", JOptionPane.INFORMATION_MESSAGE);
 						clear(true);
@@ -346,10 +348,13 @@ public class VenderQueso extends JDialog {
 				btnCancelar = new JButton("Cerrar");
 				btnCancelar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						if (btnCancelar.getText().equalsIgnoreCase("Cerrar"))
+						if (btnCancelar.getText().equalsIgnoreCase("Cerrar")) {
 							dispose();
+							setModal(false);
+						}
 						else
 							clear(false);
+						
 					}
 				});
 				btnCancelar.setActionCommand("Cancel");
@@ -397,14 +402,14 @@ public class VenderQueso extends JDialog {
 		model = (DefaultListModel<String>) lstCarrito.getModel();
 		model.clear();
 		
-		if (vendoQuesos.getMisQuesos().size() == 0) {
+		if (Complejo.getInstance().getMisQuesos().size() == 0) {
 			JOptionPane.showMessageDialog(null, "No hay existencias de queso", "Información.", JOptionPane.WARNING_MESSAGE);
 			esPosibleVender = false;
 		} else {
 			int aux = 0; 
 			stock.clear();
 			carritoCompras.clear();
-			for (Queso i : vendoQuesos.getMisQuesos()) {
+			for (Queso i : Complejo.getInstance().getMisQuesos()) {
 				item = aux + ":" + formateador.format(i.costo()) + "$: ";
 				aux++;
 				if (i instanceof Esfera)
@@ -427,7 +432,7 @@ public class VenderQueso extends JDialog {
 	public void actualizarLista(boolean razon, int index) {
 		if (razon) {// Comprar
 			carritoCompras.add(stock.get(index));
-			total += vendoQuesos.getMisQuesos().get(formatItemIndex(stock.get(index))).costo();
+			total += Complejo.getInstance().getMisQuesos().get(formatItemIndex(stock.get(index))).costo();
 			stock.remove(index);
 			if (stock.size() == 0)
 				btnAdd.setEnabled(false);
@@ -438,7 +443,7 @@ public class VenderQueso extends JDialog {
 			}
 		} else {	// Devolver
 			stock.add(carritoCompras.get(index));
-			total -= vendoQuesos.getMisQuesos().get(formatItemIndex(stock.get(index))).costo();
+			total -= Complejo.getInstance().getMisQuesos().get(formatItemIndex(stock.get(index))).costo();
 			carritoCompras.remove(index);
 			if (carritoCompras.size() == 0)
 			{

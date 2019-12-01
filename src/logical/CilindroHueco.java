@@ -1,6 +1,9 @@
 package logical;
 
-public class CilindroHueco extends Cilindro {
+import java.io.Serializable;
+
+public class CilindroHueco extends Cilindro implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private float radioInt;
 	
 	public CilindroHueco(float precioBase, float precioUnitario, float radio, float altura, float radioInt) {

@@ -29,7 +29,6 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.ListSelectionModel;
 
 public class MostrarHistorial extends JDialog {
-	private Complejo vendoQuesos;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtEsfera;
 	private JTextField txtCilindro;
@@ -43,10 +42,9 @@ public class MostrarHistorial extends JDialog {
 	// Formateador
 	DecimalFormat formateador;
 
-	public MostrarHistorial(Complejo vendoQuesos) {
+	public MostrarHistorial() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MostrarHistorial.class.getResource("/images/cheese.png")));
 		formateador = new DecimalFormat("####.##");
-		this.vendoQuesos = vendoQuesos;
 		setTitle("Historial de quesos");
 		setResizable(false);
 		setBounds(100, 100, 502, 470);
@@ -143,12 +141,12 @@ public class MostrarHistorial extends JDialog {
 	private void loadQuesos() {
 		model.setRowCount(0);
 		row = new Object[model.getColumnCount()];
-		for (int i = 0; i < vendoQuesos.getMisFacturaciones().size(); i++) {
-			for (int j = 0; j < vendoQuesos.getMisFacturaciones().get(i).getMisQuesos().size(); j++) {
-				row[0] = vendoQuesos.getMisFacturaciones().get(i).getIdFactura();
-				row[1] = vendoQuesos.getMisFacturaciones().get(i).getMiCliente().getIdCliente();
-				row[2] = vendoQuesos.getMisFacturaciones().get(i).getMiCliente().getNombre();
-				Queso queso = vendoQuesos.getMisFacturaciones().get(i).getMisQuesos().get(j);
+		for (int i = 0; i < Complejo.getInstance().getMisFacturaciones().size(); i++) {
+			for (int j = 0; j < Complejo.getInstance().getMisFacturaciones().get(i).getMisQuesos().size(); j++) {
+				row[0] = Complejo.getInstance().getMisFacturaciones().get(i).getIdFactura();
+				row[1] = Complejo.getInstance().getMisFacturaciones().get(i).getMiCliente().getIdCliente();
+				row[2] = Complejo.getInstance().getMisFacturaciones().get(i).getMiCliente().getNombre();
+				Queso queso = Complejo.getInstance().getMisFacturaciones().get(i).getMisQuesos().get(j);
 				if (queso instanceof Esfera)
 					row[3] = "Esférico";
 				else if (queso instanceof CilindroHueco)
@@ -161,7 +159,7 @@ public class MostrarHistorial extends JDialog {
 			}
 		}
 		
-		int data[] = vendoQuesos.obtenerQuesos();
+		int data[] = Complejo.getInstance().obtenerQuesos();
 		txtEsfera.setText(Integer.valueOf(data[0]).toString());
 		txtHueco.setText(Integer.valueOf(data[1]).toString());
 		txtCilindro.setText(Integer.valueOf(data[2]).toString());
