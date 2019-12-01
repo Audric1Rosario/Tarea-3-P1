@@ -7,7 +7,9 @@ import java.awt.Image;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.JFormattedTextField;
 import javax.swing.border.EmptyBorder;
+
 
 import logical.Cilindro;
 import logical.CilindroHueco;
@@ -19,10 +21,12 @@ import logical.Queso;
 
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.Dimension;
 import javax.swing.border.TitledBorder;
+import javax.swing.text.MaskFormatter;
 import javax.swing.UIManager;
 import java.awt.Color;
 import javax.swing.JList;
@@ -40,7 +44,7 @@ public class VenderQueso extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtDireccion;
 	private JTextField txtNombre;
-	private JTextField txtTelefono;
+	private JFormattedTextField txtTelefono;
 	private JTextField txtIdCliente;
 	
 	// Botones
@@ -68,7 +72,7 @@ public class VenderQueso extends JDialog {
 	private JTextField txtTotal;
 	private JScrollPane scrollPane_1;
 
-	public VenderQueso(Complejo vendoQuesos) {
+	public VenderQueso(Complejo vendoQuesos) throws ParseException {
 		this.vendoQuesos = vendoQuesos;
 		stock = new ArrayList<String>();
 		carritoCompras = new ArrayList<String>();
@@ -121,7 +125,9 @@ public class VenderQueso extends JDialog {
 			lblTelefno.setBounds(10, 113, 75, 14);
 			panel_1.add(lblTelefno);
 			
-			txtTelefono = new JTextField();
+			MaskFormatter mask = new MaskFormatter("(###) ###-####");
+			
+			txtTelefono = new JFormattedTextField(mask);
 			txtTelefono.setEditable(false);
 			txtTelefono.setBounds(95, 110, 148, 20);
 			panel_1.add(txtTelefono);

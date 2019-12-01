@@ -25,6 +25,7 @@ import java.awt.Dimension;
 import javax.swing.ImageIcon;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.awt.event.ActionEvent;
 
 public class Principal extends JFrame {
@@ -84,9 +85,15 @@ public class Principal extends JFrame {
 		JMenuItem mntmPuntoDeVenta = new JMenuItem("Punto de venta");
 		mntmPuntoDeVenta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				VenderQueso ventana = new VenderQueso(vendoQuesos);
-				ventana.setModal(true);
+				VenderQueso ventana = null;
+				try {
+					ventana = new VenderQueso(vendoQuesos);
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				}
 				ventana.setVisible(true);
+				ventana.setModal(true);
+				
 			}
 		});
 		mnQuesos.add(mntmPuntoDeVenta);
